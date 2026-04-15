@@ -19,7 +19,7 @@ const pool = new pg.Pool({
   }
 });
 
-
+console.log("force deploy");
 const PORT = process.env.PORT || 8080;
 
 // 🔐 AUTH MIDDLEWARE
