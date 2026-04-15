@@ -9,12 +9,16 @@ app.use(express.json());
 app.use(express.static("public"));
 
 const pool = new pg.Pool({
-  host: "localhost",
-  port: 5432,
-  user: "postgres",
-  password: "Postgres@1234",
-  database: "movie_db"
+  host: process.env.DB_HOST,
+  port: process.env.DB_PORT,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME,
+  ssl: {
+    rejectUnauthorized: false
+  }
 });
+
 
 const PORT = process.env.PORT || 8080;
 
