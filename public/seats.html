@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-black text-white p-10">
+
+<h1 class="text-center text-2xl mb-4">🎟️ Select Seats</h1>
+
+<div id="seats" class="grid grid-cols-10 gap-3"></div>
+
+<script>
+
+if(localStorage.getItem("loggedIn")!=="true"){
+  alert("Login first");
+  location.href="login.html";
+}
+
+const params = new URLSearchParams(window.location.search);
+const showId = params.get("show");
+const type = params.get("type");
+
+if(!type){
+  alert("Select category first");
+  location.href="category.html";
+}
+
+async function loadSeats(){
+  const seats = await fetch(`/movies/seats/${showId}`).then(r=>r.json());
+
+  const box = document.getElementById("seats");
+  box.innerHTML="";
+
+  seats.forEach(seat=>{
+    const div=document.createElement("div");
+
+    const row=seat.seat_number[0];
+
+    div.innerText=seat.seat_number;
+
+    const valid =
+      (type==="Premium" && row==="A") ||
+      (type==="Executive" && row==="B") ||
+      (type==="Budget" && ["C","D","E"].includes(row));
+
+    div.className = seat.is_booked
+      ? "bg-red-500 p-2 text-center rounded"
+      : "bg-gray-700 p-2 text-center rounded cursor-pointer";
+
+    if(!valid){
+      div.style.opacity="0.3";
+    }
+
+    div.onclick = async ()=>{
+      if(!valid){
+        alert("Invalid seat");
+        return;
+      }
+
+      const user = JSON.parse(localStorage.getItem("user"));
+
+      const res = await fetch("/booking",{
+        method:"PUT",
+        headers:{
+          "Content-Type":"application/json",
+          "user": JSON.stringify(user)
+        },
+        body: JSON.stringify({
+          seatId: seat.id,
+          type: type
+        })
+      });
+
+      const data = await res.json();
+
+      if(data.error){
+        alert(data.error);
+      }
+
+      loadSeats();
+    };
+
+    box.appendChild(div);
+  });
+}
+
+loadSeats();
+
+</script>
+
+</body>
+</html>

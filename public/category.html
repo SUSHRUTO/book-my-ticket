@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-black text-white flex items-center justify-center h-screen">
+
+<div class="bg-gray-900 p-10 rounded text-center">
+
+<h1 class="text-2xl mb-6">🎟️ Select Category</h1>
+
+<button onclick="go('Premium')" class="bg-purple-500 p-3 w-full mb-3 rounded">
+Premium ₹300
+</button>
+
+<button onclick="go('Executive')" class="bg-blue-500 p-3 w-full mb-3 rounded">
+Executive ₹200
+</button>
+
+<button onclick="go('Budget')" class="bg-green-500 p-3 w-full rounded">
+Budget ₹100
+</button>
+
+</div>
+
+<script>
+const showId = new URLSearchParams(window.location.search).get("show");
+
+function go(type){
+  window.location.href = `seats.html?show=${showId}&type=${type}`;
+}
+</script>
+
+</body>
+</html>

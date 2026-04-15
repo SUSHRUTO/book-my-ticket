@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-black text-white flex items-center justify-center h-screen">
+
+<div class="bg-gray-800 p-8 rounded w-80">
+
+<h2 class="text-xl mb-4">Register</h2>
+
+<input id="name" placeholder="Name" class="block mb-2 p-2 w-full text-black"/>
+<input id="email" placeholder="Email" class="block mb-2 p-2 w-full text-black"/>
+<input id="pass" type="password" placeholder="Password" class="block mb-2 p-2 w-full text-black"/>
+<input id="confirm" type="password" placeholder="Confirm Password" class="block mb-2 p-2 w-full text-black"/>
+
+<button onclick="register()" class="bg-blue-500 w-full py-2">Register</button>
+
+</div>
+
+<script>
+function register(){
+  const name = document.getElementById("name").value;
+  const email = document.getElementById("email").value;
+  const pass = document.getElementById("pass").value;
+
+  const otp = Math.floor(100000 + Math.random()*900000);
+
+  localStorage.setItem("tempUser", JSON.stringify({name,email,pass,otp}));
+
+  alert("OTP: "+otp);
+  location.href="verify.html";
+}
+</script>
+
+</body>
+</html>

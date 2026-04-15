@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-black text-white p-10">
+
+<h1 class="text-2xl mb-6 text-center">🎟️ My Bookings</h1>
+
+<div id="list" class="space-y-3 text-center"></div>
+
+<h2 id="total" class="mt-6 text-xl text-center"></h2>
+
+<script>
+
+const user = JSON.parse(localStorage.getItem("user"));
+
+if(!user){
+  alert("Login required");
+  location.href = "login.html";
+}
+
+fetch("/my-bookings", {
+  headers: {
+    "user": JSON.stringify(user)
+  }
+})
+.then(res => res.json())
+.then(data => {
+
+  const list = document.getElementById("list");
+
+  if(data.bookings.length === 0){
+    list.innerHTML = "<p>No bookings yet</p>";
+    return;
+  }
+
+  data.bookings.forEach(b => {
+    list.innerHTML += `
+      <div class="bg-gray-800 p-3 rounded">
+        Seat: ${b.seat} | ${b.type} | ₹${b.price}
+      </div>
+    `;
+  });
+
+  document.getElementById("total").innerText =
+    "Total Amount: ₹" + data.total;
+
+});
+
+</script>
+
+</body>
+</html>
