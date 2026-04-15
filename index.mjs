@@ -16,7 +16,7 @@ const pool = new pg.Pool({
   database: "movie_db"
 });
 
-const PORT = 8080;
+const PORT = process.env.PORT || 8080;
 
 // 🔐 AUTH MIDDLEWARE
 function auth(req, res, next) {
@@ -153,5 +153,5 @@ app.get("/my-bookings", auth, async (req, res) => {
 
 // 🚀 START SERVER
 app.listen(PORT, () => {
-  console.log("Server running on port 8080");
+  console.log("Server running on port " + PORT);
 });
