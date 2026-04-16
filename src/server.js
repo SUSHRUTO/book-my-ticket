@@ -11,17 +11,17 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// ✅ Sample route (for structure demo)
+// Sample route (for structure demo)
 app.get("/test", (req, res) => {
   res.send("Server structure working");
 });
 
-// ✅ Example protected route using middleware
+// Example protected route using middleware
 app.get("/secure", auth, (req, res) => {
   res.json({ message: "Protected route accessed", user: req.user });
 });
 
-// 🚀 START
+// START
 app.listen(process.env.PORT || 8080, () => {
   console.log("Structured server running");
 });
