@@ -22,7 +22,7 @@ const pool = new pg.Pool({
 console.log("force deploy");
 const PORT = process.env.PORT || 8080;
 
-// 🔐 AUTH MIDDLEWARE
+// AUTH MIDDLEWARE
 function auth(req, res, next) {
   const userHeader = req.headers["user"];
 
@@ -39,13 +39,13 @@ function auth(req, res, next) {
   next();
 }
 
-// 🎬 MOVIES
+// MOVIES
 app.get("/movies", async (req, res) => {
   const result = await pool.query("SELECT * FROM movies");
   res.json(result.rows);
 });
 
-// 🎬 SHOWS
+// SHOWS
 app.get("/movies/shows/:movieId", async (req, res) => {
   const result = await pool.query(
     "SELECT * FROM shows WHERE movie_id=$1",
@@ -54,7 +54,7 @@ app.get("/movies/shows/:movieId", async (req, res) => {
   res.json(result.rows);
 });
 
-// 💺 SEATS
+// SEATS
 app.get("/movies/seats/:showId", async (req, res) => {
   const result = await pool.query(
     `SELECT * FROM seats 
@@ -67,7 +67,7 @@ app.get("/movies/seats/:showId", async (req, res) => {
   res.json(result.rows);
 });
 
-// 🎟️ BOOKING (STRICT)
+// BOOKING (STRICT)
 app.put("/booking", auth, async (req, res) => {
   const { seatId, type } = req.body;
   const user = req.user;
@@ -119,7 +119,7 @@ app.put("/booking", auth, async (req, res) => {
   }
 });
 
-// 📊 MY BOOKINGS (FIXED 🔥)
+// MY BOOKINGS
 app.get("/my-bookings", auth, async (req, res) => {
   const user = req.user;
 
@@ -155,7 +155,7 @@ app.get("/my-bookings", auth, async (req, res) => {
   res.json({ bookings, total });
 });
 
-// 🚀 START SERVER
+// START SERVER
 app.listen(PORT, () => {
   console.log("Server running on port " + PORT);
 });
