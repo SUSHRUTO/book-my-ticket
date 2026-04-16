@@ -44,11 +44,13 @@ book-my-ticket/
 ├── public/ # Frontend files
 │ ├── index.html # Home (movies page)
 │ ├── shows.html # Show selection
-│ ├── seats.html # Seat booking UI
+│ ├── seats.html # Seat booking
+│ ├── category.html # Seat category selection
 │ ├── login.html # Login page
 │ ├── register.html # Registration page
 │ ├── verify.html # OTP verification
 │ ├── my-bookings.html # User bookings
+│ ├── admin.html # Admin dashboard
 │ └── images/ # Movie posters
 │
 ├── src/ # Backend structure
@@ -58,14 +60,15 @@ book-my-ticket/
 │ │ └── auth.js # Authentication middleware
 │ └── server.js # Modular server (structure purpose)
 │
-├── controllers/ # Route logic (if used)
+├── controllers/ # Business logic (if used)
 ├── routes/ # API routes (if used)
 │
 ├── index.mjs # Main backend server
-├── package.json # Dependencies & scripts
+├── package.json # Dependencies
+├── package-lock.json # Lock file
 ├── .gitignore # Ignore node_modules & .env
 ├── .env # Environment variables (not pushed)
-└── README.md # Project documentation
+└── README.md # Documentation
 ```
 
 ---
