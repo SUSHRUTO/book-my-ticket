@@ -37,15 +37,38 @@ A full-stack movie ticket booking web application built using **Node.js, Express
 ---
 
 ## 📂 Project Structure
+
+```plaintext
 book-my-ticket/
 │
 ├── public/ # Frontend files
-├── src/ # Middleware & config
+│ ├── index.html # Home (movies page)
+│ ├── shows.html # Show selection
+│ ├── seats.html # Seat booking UI
+│ ├── login.html # Login page
+│ ├── register.html # Registration page
+│ ├── verify.html # OTP verification
+│ ├── my-bookings.html # User bookings
+│ └── images/ # Movie posters
+│
+├── src/ # Backend structure
+│ ├── config/
+│ │ └── db.js # Database connection (Neon/PostgreSQL)
+│ ├── middleware/
+│ │ └── auth.js # Authentication middleware
+│ └── server.js # Modular server (structure purpose)
+│
+├── controllers/ # Route logic (if used)
+├── routes/ # API routes (if used)
+│
 ├── index.mjs # Main backend server
-├── package.json
-├── .gitignore
-└── README.md
+├── package.json # Dependencies & scripts
+├── .gitignore # Ignore node_modules & .env
+├── .env # Environment variables (not pushed)
+└── README.md # Project documentation
+```
 
+---
 
 ---
 
