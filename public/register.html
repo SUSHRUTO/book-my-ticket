@@ -21,16 +21,32 @@
 
 <script>
 function register(){
-  const name = document.getElementById("name").value;
-  const email = document.getElementById("email").value;
-  const pass = document.getElementById("pass").value;
+  const name = document.getElementById("name").value.trim();
+  const email = document.getElementById("email").value.trim();
+  const pass = document.getElementById("pass").value.trim();
+  const confirm = document.getElementById("confirm").value.trim();
+
+  if(!name || !email || !pass || !confirm){
+    alert("Please fill all fields");
+    return;
+  }
+
+  if(pass !== confirm){
+    alert("Passwords do not match");
+    return;
+  }
 
   const otp = Math.floor(100000 + Math.random()*900000);
 
-  localStorage.setItem("tempUser", JSON.stringify({name,email,pass,otp}));
+  localStorage.setItem("tempUser", JSON.stringify({
+    name,
+    email,
+    pass,
+    otp
+  }));
 
-  alert("OTP: "+otp);
-  location.href="verify.html";
+  alert("Your OTP is: " + otp);
+  location.href = "verify.html";
 }
 </script>
 

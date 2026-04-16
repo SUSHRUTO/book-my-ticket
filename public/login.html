@@ -30,8 +30,8 @@ Don't have an account?
 
 <script>
 function login(){
-  const email = document.getElementById("email").value;
-  const pass = document.getElementById("pass").value;
+  const email = document.getElementById("email").value.trim();
+  const pass = document.getElementById("pass").value.trim();
 
   const users = JSON.parse(localStorage.getItem("users")) || [];
 

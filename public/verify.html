@@ -1,125 +1,52 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.tailwindcss.com"></script>
 </head>
 
-<body class="bg-black text-white p-10">
+<body class="bg-black text-white flex items-center justify-center h-screen">
 
-<h1 class="text-2xl mb-4 text-center">🎟️ Select Seats</h1>
+<div class="bg-gray-800 p-8 rounded w-80 text-center">
 
-<div id="seats" class="grid grid-cols-10 gap-3 justify-center"></div>
+<h2 class="text-xl mb-4">Verify OTP</h2>
+
+<input id="otp" placeholder="Enter OTP" class="p-2 w-full text-black mb-4"/>
+
+<button onclick="verify()" class="bg-green-500 w-full py-2">Verify</button>
+
+</div>
 
 <script>
+function verify(){
+  const entered = document.getElementById("otp").value.trim();
 
-// 🔐 LOGIN CHECK
-if(localStorage.getItem("loggedIn") !== "true"){
-  alert("Please login first");
-  window.location.href = "login.html";
+  const temp = JSON.parse(localStorage.getItem("tempUser"));
+
+  if(!temp){
+    alert("Session expired. Register again.");
+    location.href = "register.html";
+    return;
+  }
+
+  if(entered == temp.otp){
+
+    let users = JSON.parse(localStorage.getItem("users")) || [];
+
+    users.push({
+      name: temp.name,
+      email: temp.email,
+      password: temp.pass
+    });
+
+    localStorage.setItem("users", JSON.stringify(users));
+
+    alert("Registration successful!");
+    location.href = "login.html";
+
+  } else {
+    alert("Invalid OTP");
+  }
 }
-
-// 📌 GET URL PARAMS
-const params = new URLSearchParams(window.location.search);
-const showId = params.get("show");
-const type = params.get("type");
-
-// ❗ TYPE CHECK (VERY IMPORTANT)
-if(!type){
-  alert("Please select seat category first");
-  window.location.href = "category.html";
-}
-
-async function loadSeats(){
-  const seats = await fetch(`/movies/seats/${showId}`).then(r=>r.json());
-
-  const container = document.getElementById("seats");
-  container.innerHTML = "";
-
-  seats.forEach(seat => {
-
-    const div = document.createElement("div");
-
-    const row = seat.seat_number.charAt(0);
-
-    // 🎨 COLOR BASED ON ROW
-    let color =
-      row === "A" ? "bg-purple-500" :
-      row === "B" ? "bg-blue-500" :
-      "bg-green-500";
-
-    // ❌ BOOKED SEAT
-    if(seat.is_booked){
-      div.className = "bg-red-500 p-3 text-center rounded";
-    } else {
-      div.className = `${color} p-3 text-center rounded cursor-pointer`;
-    }
-
-    // ✅ ONLY SHOW SEAT NUMBER
-    div.innerText = seat.seat_number;
-
-    // 🔒 CATEGORY VALIDATION
-    const valid =
-      (type === "Premium" && row === "A") ||
-      (type === "Executive" && row === "B") ||
-      (type === "Budget" && ["C","D","E"].includes(row));
-
-    // 🚫 DISABLE WRONG SEATS (UI)
-    if(!valid){
-      div.style.opacity = "0.3";
-      div.style.cursor = "not-allowed";
-    }
-
-    // 🖱️ CLICK EVENT
-    div.onclick = async () => {
-
-      const user = JSON.parse(localStorage.getItem("user"));
-
-      if(!user){
-        alert("Login required");
-        return;
-      }
-
-      if(seat.is_booked){
-        alert("Seat already booked");
-        return;
-      }
-
-      // 🔥 FINAL CHECK
-      if(!valid){
-        alert("Invalid seat for selected category");
-        return;
-      }
-
-      const res = await fetch("/booking", {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          "user": JSON.stringify(user)
-        },
-        body: JSON.stringify({
-          seatId: seat.id,
-          type: type
-        })
-      });
-
-      const data = await res.json();
-
-      if(data.error){
-        alert(data.error);
-      } else {
-        alert("Seat booked successfully!");
-      }
-
-      loadSeats();
-    };
-
-    container.appendChild(div);
-  });
-}
-
-// 🚀 LOAD
-loadSeats();
-
 </script>
 
 </body>
